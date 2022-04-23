@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="google_web_client_id" tools:ignore="TypographyDashes">
+    224880152982-8k1f20bhuq30aubigno207gbi7v5tju5.apps.googleusercontent.com
+    </string>
+
+</resources>

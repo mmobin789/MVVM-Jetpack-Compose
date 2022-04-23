@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="txt_submit">submit</string>
+    <string name="txt_loading">Loading…</string>
+    <string name="txt_search">Search</string>
+    <string name="txt_blank">Search Query is Blank</string>
+</resources>
