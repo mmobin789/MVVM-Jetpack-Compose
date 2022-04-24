@@ -7,9 +7,11 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.scalio.ui.home.HomeView
 import com.scalio.ui.home.HomeViewIntent
 import com.scalio.ui.main.nav.Nav
@@ -48,7 +50,14 @@ private fun NavView(homeViewIntent: HomeViewIntent, searchViewIntent: SearchView
             HomeView(nav = nav, homeViewIntent = homeViewIntent)
         }
 
-        composable(Nav.SEARCH) {
+        composable(
+            Nav.SEARCH,
+            arguments = listOf(
+                navArgument("query") {
+                    type = NavType.StringType
+                }
+            )
+        ) {
             SearchView(nav, searchViewIntent)
         }
     }
