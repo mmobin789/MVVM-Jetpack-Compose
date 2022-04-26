@@ -3,6 +3,7 @@ plugins {
     id("kotlin-android")
     kotlin("kapt")
     id("dagger.hilt.android.plugin")
+    id("kotlin-parcelize")
 }
 
 android {

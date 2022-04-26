@@ -5,16 +5,11 @@ import com.scalio.ui.search.model.remote.Users
 
 class SearchViewLogic(private val userRepository: UserRepository) {
 
-    private var page = 1
+    private var page = 2
 
-    suspend fun searchUser(user: String, pageNo: Int, perPage: Int): Users {
-
-        val users = userRepository.searchUser(user, page, perPage)
-
-        page = if (pageNo > 1)
-            pageNo
-        else page++
-
+    suspend fun searchUser(user: String): Users {
+        val users = userRepository.searchUser(user, page, 9)
+        page++
         return users
     }
 }

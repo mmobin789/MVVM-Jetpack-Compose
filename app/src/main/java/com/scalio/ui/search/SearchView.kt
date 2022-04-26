@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
@@ -22,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.scalio.R
 import com.scalio.ui.main.nav.Nav
+import com.scalio.ui.main.showToast
 import com.scalio.ui.theme.RentNPayTheme
 import com.scalio.ui.theme.appBG
 import com.scalio.ui.theme.appTextBG
@@ -35,14 +37,16 @@ fun SearchView(
     // A surface container using the 'background' color from the theme
     Surface(color = MaterialTheme.colors.background) {
         Column {
-            // val context = LocalContext.current
+            val context = LocalContext.current
             when (val uiState = searchViewIntent(rememberCoroutineScope()).value) {
                 SearchViewState.Idle -> {
-                    searchViewIntent.searchUsers(nav.parseSearchViewArgs())
+                    searchViewIntent.searchUsers(nav.parseSearchViewArgs().query)
                 }
                 SearchViewState.Loading -> {
+                    context.showToast(R.string.txt_loading)
                 }
                 is SearchViewState.Success -> {
+                    context.showToast(uiState.users.totalCount.toString())
                 }
                 is SearchViewState.Fail -> {}
             }

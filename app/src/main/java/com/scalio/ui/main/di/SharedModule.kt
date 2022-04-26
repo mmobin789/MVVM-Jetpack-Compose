@@ -1,15 +1,21 @@
 package com.scalio.ui.main.di
 
 import android.content.Context
+import com.google.gson.Gson
 import com.scalio.app.Scalio
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
-@InstallIn(ViewModelComponent::class)
+@InstallIn(SingletonComponent::class)
 @Module
-class SharedModule {
+object SharedModule {
     @Provides
     fun providesContext(): Context = Scalio.instance
+
+    @Singleton
+    @Provides
+    fun providesGson() = Gson()
 }

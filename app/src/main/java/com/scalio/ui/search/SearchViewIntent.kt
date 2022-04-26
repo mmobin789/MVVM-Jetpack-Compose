@@ -18,16 +18,19 @@ class SearchViewIntent(private val searchViewLogic: SearchViewLogic) {
         return uiState
     }
 
-    fun reset() {
-        uiState.value = SearchViewState.Idle
-    }
+    /* fun reset() {
+         uiState.value = SearchViewState.Idle
+     }*/
 
     fun searchUsers(user: String) {
+
+        uiState.value = SearchViewState.Loading
+
         composeScope.launch {
             uiState.value = try {
                 SearchViewState.Success(
                     withContext(Dispatchers.IO) {
-                        searchViewLogic.searchUser(user, 1, 9)
+                        searchViewLogic.searchUser(user)
                     }
                 )
             } catch (e: Exception) {

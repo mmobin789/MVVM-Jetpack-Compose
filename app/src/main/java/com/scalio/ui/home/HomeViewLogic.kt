@@ -1,6 +1,8 @@
 package com.scalio.ui.home
 
-/*class HomeViewLogic(private val userRepository: UserRepository) {
+import com.scalio.ui.home.repository.UserRepository
 
-    suspend fun searchUser(user: String) = userRepository.searchUser(user)
-}*/
+class HomeViewLogic(private val userRepository: UserRepository) {
+
+    suspend fun searchUser(user: String) = userRepository.searchUser(user, 1, 9)
+}

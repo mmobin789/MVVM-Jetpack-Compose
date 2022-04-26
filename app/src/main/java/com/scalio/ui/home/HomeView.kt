@@ -40,23 +40,31 @@ fun HomeView(
             val textId = when (val uiState = homeViewIntent(scope).value) {
                 HomeViewState.Idle -> R.string.txt_submit
                 HomeViewState.Loading -> {
-                    nav.openSearchView(query)
                     R.string.txt_loading
                 }
-                is HomeViewState.Fail -> {
+                is HomeViewState.ApiFail -> {
                     context.showToast(uiState.error)
                     R.string.txt_submit
                 }
+                is HomeViewState.InputFail -> {
+                    context.showToast(uiState.error)
+                    homeViewIntent.reset()
+                    R.string.txt_submit
+                }
                 is HomeViewState.Success -> {
+                    nav.openSearchView(
+                        uiState.users.also {
+                            it.query = query
+                        }
+                    )
+                    homeViewIntent.reset()
                     R.string.txt_submit
                 }
             }
 
             SubmitButton(textId) {
-                homeViewIntent.loadSearchedUsers(query)
+                homeViewIntent.searchUsers(query)
             }
-
-            homeViewIntent.reset()
         }
     }
 }
