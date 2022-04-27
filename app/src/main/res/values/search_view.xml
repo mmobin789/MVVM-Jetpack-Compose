@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="category_search_input"> Find Clothes…</string>
-    <string name="category_browse_category_label">Browse Categories</string>
-    <string name="category_see_all_label">See all</string>
-    <string name="category_label">Category</string>
+    <string name="user_label">User: </string>
 </resources>

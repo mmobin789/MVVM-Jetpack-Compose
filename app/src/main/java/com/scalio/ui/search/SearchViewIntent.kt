@@ -18,9 +18,9 @@ class SearchViewIntent(private val searchViewLogic: SearchViewLogic) {
         return uiState
     }
 
-    /* fun reset() {
-         uiState.value = SearchViewState.Idle
-     }*/
+    fun reset() {
+        uiState.value = SearchViewState.Idle
+    }
 
     fun searchUsers(user: String) {
 
