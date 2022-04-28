@@ -48,7 +48,6 @@ fun HomeView(
                 }
                 is HomeViewState.InputFail -> {
                     context.showToast(uiState.error)
-                    homeViewIntent.reset()
                     R.string.txt_submit
                 }
                 is HomeViewState.Success -> {
@@ -57,10 +56,11 @@ fun HomeView(
                             it.query = query
                         }
                     )
-                    homeViewIntent.reset()
                     R.string.txt_submit
                 }
             }
+
+            homeViewIntent.reset()
 
             SubmitButton(textId) {
                 homeViewIntent.searchUsers(query)

@@ -9,7 +9,8 @@ class SearchViewLogic(private val userRepository: UserRepository) {
 
     suspend fun searchUser(user: String): Users {
         val users = userRepository.searchUser(user, page, 9)
-        page++
+        if (users.users.isNotEmpty())
+            page++
         return users
     }
 }

@@ -23,7 +23,6 @@ class SearchViewIntent(private val searchViewLogic: SearchViewLogic) {
     }
 
     fun searchUsers(user: String) {
-
         uiState.value = SearchViewState.Loading
 
         composeScope.launch {
