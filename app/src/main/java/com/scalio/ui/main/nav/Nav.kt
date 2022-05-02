@@ -2,7 +2,6 @@ package com.scalio.ui.main.nav
 
 import android.os.Bundle
 import androidx.navigation.NavHostController
-import com.scalio.ui.search.model.remote.Users
 
 class Nav(val navHostController: NavHostController) {
 
@@ -10,12 +9,12 @@ class Nav(val navHostController: NavHostController) {
 
     //  fun openHomeView() = navHostController.navigate(HOME)
 
-    fun openSearchView(users: Users) {
-        args.putParcelable("users", users)
+    fun openSearchView(user: String) {
+        args.putString("user", user)
         navHostController.navigate(SEARCH)
     }
 
-    fun parseSearchViewArgs() = args.getParcelable<Users>("users")!!
+    fun parseSearchViewArgs() = args.getString("user")!!
 
     companion object Route {
         const val HOME = "home"

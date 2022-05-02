@@ -93,6 +93,7 @@ dependencies {
     implementation(Libs.Compose.material)
     implementation(Libs.Compose.toolingPreview)
     implementation(Libs.Compose.ui)
+    implementation(Libs.Compose.pagination)
 
     implementation(Libs.Nav.ui)
     implementation(Libs.Nav.composeSupport)

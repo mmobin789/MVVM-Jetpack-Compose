@@ -7,6 +7,7 @@ object Versions {
         const val googleMaterial = "1.4.0"
         const val lifecycle = "2.4.0"
         const val navigation = "2.3.5"
+        const val pagination = "1.0.0-alpha14"
     }
 
     internal object Testing {

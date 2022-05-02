@@ -23,6 +23,7 @@ object Libs {
         const val tooling = "androidx.compose.ui:ui-tooling:${Versions.compose}"
         const val activity =
             "androidx.activity:activity-compose:${Versions.UI.composeActivity}"
+        const val pagination = "androidx.paging:paging-compose:${Versions.UI.pagination}"
     }
     // navigation graph
 

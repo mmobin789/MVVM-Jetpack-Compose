@@ -34,36 +34,25 @@ fun HomeView(
     Surface(color = MaterialTheme.colors.background) {
         Column {
             val context = LocalContext.current
-            val query = searchInputText()
+            val user = searchInputText()
             val scope = rememberCoroutineScope()
 
-            val textId = when (val uiState = homeViewIntent(scope).value) {
+            val textId = when (val uiState = homeViewIntent(scope)) {
                 HomeViewState.Idle -> R.string.txt_submit
-                HomeViewState.Loading -> {
-                    R.string.txt_loading
-                }
-                is HomeViewState.ApiFail -> {
-                    context.showToast(uiState.error)
-                    R.string.txt_submit
-                }
                 is HomeViewState.InputFail -> {
+                    homeViewIntent.reset()
                     context.showToast(uiState.error)
                     R.string.txt_submit
                 }
                 is HomeViewState.Success -> {
-                    nav.openSearchView(
-                        uiState.users.also {
-                            it.query = query
-                        }
-                    )
-                    R.string.txt_submit
+                    homeViewIntent.reset()
+                    nav.openSearchView(user)
+                    R.string.txt_success
                 }
             }
 
-            homeViewIntent.reset()
-
             SubmitButton(textId) {
-                homeViewIntent.searchUsers(query)
+                homeViewIntent.searchUsers(user)
             }
         }
     }

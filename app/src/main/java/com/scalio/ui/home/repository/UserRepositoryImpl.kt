@@ -1,8 +1,13 @@
 package com.scalio.ui.home.repository
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import com.scalio.ui.home.repository.src.UserRepoRemoteSource
+import com.scalio.ui.search.model.remote.UserRemotePagingSource
 
 class UserRepositoryImpl(private val userRepoRemoteSource: UserRepoRemoteSource) : UserRepository {
-    override suspend fun searchUser(user: String, pageNo: Int, perPage: Int) =
-        userRepoRemoteSource.searchUser(user, pageNo, perPage)
+    override fun getUsers(user: String, page: Int, perPage: Int) =
+        Pager(PagingConfig(pageSize = 9)) {
+            UserRemotePagingSource(user, userRepoRemoteSource)
+        }.flow
 }

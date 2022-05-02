@@ -1,7 +1,9 @@
 package com.scalio.ui.home.repository
 
-import com.scalio.ui.search.model.remote.Users
+import androidx.paging.PagingData
+import com.scalio.ui.search.model.remote.GithubUser
+import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
-    suspend fun searchUser(user: String, pageNo: Int, perPage: Int): Users
+    fun getUsers(user: String, page: Int, perPage: Int): Flow<PagingData<GithubUser>>
 }
