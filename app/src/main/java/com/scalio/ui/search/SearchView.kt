@@ -3,20 +3,16 @@ package com.scalio.ui.search
 import android.graphics.Typeface
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color.Companion.Red
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -25,7 +21,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.paging.LoadState
-import androidx.paging.compose.LazyPagingItems
+import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.scalio.R
@@ -34,6 +30,7 @@ import com.scalio.ui.main.showToast
 import com.scalio.ui.search.model.remote.GithubUser
 import com.scalio.ui.theme.RentNPayTheme
 import com.scalio.ui.theme.appTextBG
+import kotlinx.coroutines.flow.Flow
 
 @Composable
 fun SearchView(
@@ -44,26 +41,70 @@ fun SearchView(
     // A surface container using the 'background' color from the theme
     Surface(color = MaterialTheme.colors.background) {
         Column {
-            val context = LocalContext.current
             val user = nav.parseSearchViewArgs()
+            UsersList(searchViewIntent.searchUsers(user, rememberCoroutineScope()))
+        }
+    }
+}
 
-            UsersList(
-                searchViewIntent.searchUsers(user, rememberCoroutineScope())
-                    .collectAsLazyPagingItems()
-            ) {
-                it.run {
-                    when {
-                        loadState.refresh is LoadState.Loading -> {
-                            context.showToast(R.string.txt_loading)
-                            // You can add modifier to manage load state when first time response page is loading
+@Composable
+private fun UsersList(
+    githubUsersFlow: Flow<PagingData<GithubUser>>
+) {
+    val githubUsers = githubUsersFlow.collectAsLazyPagingItems()
+    val context = LocalContext.current
+    LazyColumn {
+        items(githubUsers) { item ->
+            GitHubUserView(githubUser = item!!)
+        }
+
+        githubUsers.run {
+            val state = loadState
+            when {
+
+                state.refresh is LoadState.Loading -> {
+                    item {
+                        Column(
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = CenterHorizontally,
+                            modifier = Modifier.fillParentMaxSize()
+                        ) {
+                            CircularProgressIndicator()
                         }
-                        loadState.append is LoadState.Loading -> {
-                            // You can add modifier to manage load state when next response page is loading
-                        }
-                        loadState.append is LoadState.Error -> {
-                            val errorState = loadState.append as LoadState.Error
-                            context.showToast(errorState.error.message)
-                            // You can use modifier to show error message
+                    }
+                    // You can add modifier to manage load state when first time response page is loading
+                }
+
+                state.refresh is LoadState.Error -> {
+                    val errorState = state.refresh as LoadState.Error
+
+                    if (errorState.endOfPaginationReached) {
+                        context.showToast(R.string.txt_success)
+                    } else {
+                        context.showToast(errorState.error.message)
+                    }
+                }
+                state.append is LoadState.Loading -> {
+                    // You can add modifier to manage load state when next response page is loading
+                    item {
+                        CircularProgressIndicator(
+                            modifier = Modifier
+                                .padding(16.dp)
+                                .wrapContentWidth(CenterHorizontally)
+                        )
+                    }
+                }
+                state.append is LoadState.Error -> {
+                    // You can use modifier to show error message
+                    val errorState = state.append as LoadState.Error
+
+                    if (errorState.endOfPaginationReached) {
+                        context.showToast(R.string.txt_success)
+                    } else {
+                        item {
+                            RetryButton(errorState.error.message) {
+                                retry()
+                            }
                         }
                     }
                 }
@@ -73,23 +114,25 @@ fun SearchView(
 }
 
 @Composable
-private fun UsersList(
-    githubUsers: LazyPagingItems<GithubUser>,
-    onList: (LazyPagingItems<GithubUser>) -> Unit
+private fun RetryButton(error: String?, onClick: () -> Unit) = Row(
+    modifier = Modifier.padding(16.dp),
+    horizontalArrangement = Arrangement.SpaceBetween,
+    verticalAlignment = Alignment.CenterVertically
 ) {
-    LazyColumn {
-        items(githubUsers) { item ->
-            item?.also {
-                GitHubUserView(githubUser = it)
-            }
-        }
+    Text(
+        text = error.orEmpty(),
+        maxLines = 1,
+        modifier = Modifier.weight(1f),
+        style = MaterialTheme.typography.h6,
+        color = Red
+    )
+    OutlinedButton(onClick = onClick) {
+        Text(text = stringResource(id = R.string.retry_label))
     }
-
-    onList(githubUsers)
 }
 
 @Composable
-fun GitHubUserView(githubUser: GithubUser) = Column(
+private fun GitHubUserView(githubUser: GithubUser) = Column(
     horizontalAlignment = CenterHorizontally,
     verticalArrangement = Arrangement.Center
 ) {

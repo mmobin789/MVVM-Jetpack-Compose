@@ -14,13 +14,14 @@ class UserRemotePagingSource(
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, GithubUser> {
         val nextPage = params.key ?: 1
-        val users = userRepoRemoteSource.getUsers(user, nextPage, params.loadSize).githubUsers
         return try {
-            LoadResult.Page(
-                data = users,
-                if (nextPage == 1) null else nextPage - 1,
-                if (users.isEmpty()) null else nextPage + 1
-            )
+            userRepoRemoteSource.getUsers(user, nextPage, params.loadSize).githubUsers.run {
+                LoadResult.Page(
+                    data = this,
+                    if (nextPage == 1) null else nextPage - 1,
+                    if (isEmpty()) null else nextPage + 1
+                )
+            }
         } catch (e: Exception) {
             LoadResult.Error(e)
         }
