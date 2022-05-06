@@ -28,7 +28,7 @@ import com.scalio.R
 import com.scalio.ui.main.nav.Nav
 import com.scalio.ui.main.showToast
 import com.scalio.ui.search.model.remote.GithubUser
-import com.scalio.ui.theme.RentNPayTheme
+import com.scalio.ui.theme.ScalioTheme
 import com.scalio.ui.theme.appTextBG
 import kotlinx.coroutines.flow.Flow
 
@@ -36,13 +36,20 @@ import kotlinx.coroutines.flow.Flow
 fun SearchView(
     nav: Nav,
     searchViewIntent: SearchViewIntent
-) = RentNPayTheme {
+) = ScalioTheme {
 
     // A surface container using the 'background' color from the theme
     Surface(color = MaterialTheme.colors.background) {
         Column {
             val user = nav.parseSearchViewArgs()
-            UsersList(searchViewIntent.searchUsers(user, rememberCoroutineScope()))
+            when (val state = searchViewIntent(rememberCoroutineScope())) {
+                SearchViewState.Loading -> {
+                    searchViewIntent.searchUsers(user)
+                }
+                is SearchViewState.UserListing -> {
+                    UsersList(state.flowPagingData)
+                }
+            }
         }
     }
 }
@@ -53,16 +60,17 @@ private fun UsersList(
 ) {
     val githubUsers = githubUsersFlow.collectAsLazyPagingItems()
     val context = LocalContext.current
+
     LazyColumn {
+
         items(githubUsers) { item ->
             GitHubUserView(githubUser = item!!)
         }
-
         githubUsers.run {
-            val state = loadState
+
             when {
 
-                state.refresh is LoadState.Loading -> {
+                loadState.refresh is LoadState.Loading -> {
                     item {
                         Column(
                             verticalArrangement = Arrangement.Center,
@@ -72,11 +80,10 @@ private fun UsersList(
                             CircularProgressIndicator()
                         }
                     }
-                    // You can add modifier to manage load state when first time response page is loading
                 }
 
-                state.refresh is LoadState.Error -> {
-                    val errorState = state.refresh as LoadState.Error
+                loadState.refresh is LoadState.Error -> {
+                    val errorState = loadState.refresh as LoadState.Error
 
                     if (errorState.endOfPaginationReached) {
                         context.showToast(R.string.txt_success)
@@ -84,19 +91,20 @@ private fun UsersList(
                         context.showToast(errorState.error.message)
                     }
                 }
-                state.append is LoadState.Loading -> {
+                loadState.append is LoadState.Loading -> {
                     // You can add modifier to manage load state when next response page is loading
                     item {
                         CircularProgressIndicator(
                             modifier = Modifier
                                 .padding(16.dp)
+                                .fillMaxWidth()
                                 .wrapContentWidth(CenterHorizontally)
                         )
                     }
                 }
-                state.append is LoadState.Error -> {
+                loadState.append is LoadState.Error -> {
                     // You can use modifier to show error message
-                    val errorState = state.append as LoadState.Error
+                    val errorState = loadState.append as LoadState.Error
 
                     if (errorState.endOfPaginationReached) {
                         context.showToast(R.string.txt_success)

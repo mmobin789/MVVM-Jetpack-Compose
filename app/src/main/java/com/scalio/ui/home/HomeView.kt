@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.sp
 import com.scalio.R
 import com.scalio.ui.main.nav.Nav
 import com.scalio.ui.main.showToast
-import com.scalio.ui.theme.RentNPayTheme
+import com.scalio.ui.theme.ScalioTheme
 import com.scalio.ui.theme.appBG
 import com.scalio.ui.theme.blue300
 
@@ -28,7 +28,7 @@ import com.scalio.ui.theme.blue300
 fun HomeView(
     nav: Nav,
     homeViewIntent: HomeViewIntent,
-) = RentNPayTheme {
+) = ScalioTheme {
 
     // A surface container using the 'background' color from the theme
     Surface(color = MaterialTheme.colors.background) {
