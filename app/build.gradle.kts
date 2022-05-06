@@ -108,4 +108,6 @@ dependencies {
     implementation(Libs.Networking.retrofit)
     implementation(Libs.Networking.gsonConverter)
     implementation(Libs.Networking.okHttp)
+
+    implementation(Libs.ThirdParty.landscape)
 }

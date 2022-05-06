@@ -1,7 +1,6 @@
 package com.scalio.ui.search
 
 import android.graphics.Typeface
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -14,7 +13,6 @@ import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.Red
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
@@ -24,12 +22,15 @@ import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
+import coil.request.ImageRequest
+import coil.transform.CircleCropTransformation
 import com.scalio.R
 import com.scalio.ui.main.nav.Nav
 import com.scalio.ui.main.showToast
 import com.scalio.ui.search.model.remote.GithubUser
 import com.scalio.ui.theme.ScalioTheme
 import com.scalio.ui.theme.appTextBG
+import com.skydoves.landscapist.coil.CoilImage
 import kotlinx.coroutines.flow.Flow
 
 @Composable
@@ -144,10 +145,17 @@ private fun GitHubUserView(githubUser: GithubUser) = Column(
     horizontalAlignment = CenterHorizontally,
     verticalArrangement = Arrangement.Center
 ) {
-    Image(
-        painter = painterResource(R.drawable.ic_outline_category_view_24),
-        contentDescription = null,
+    CoilImage(
+        imageRequest = ImageRequest.Builder(LocalContext.current)
+            .data(githubUser.avatarUrl)
+            .size(120)
+            .placeholder(R.drawable.ic_baseline_image_24)
+            .error(R.drawable.ic_baseline_image_24)
+            .crossfade(true)
+            .transformations(CircleCropTransformation())
+            .build(),
         modifier = Modifier
+            .size(120.dp)
             .padding(8.dp)
             .background(shape = CircleShape, color = appTextBG)
             .padding(16.dp)

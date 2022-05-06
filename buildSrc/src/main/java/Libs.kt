@@ -58,4 +58,8 @@ object Libs {
         const val hilt = "com.google.dagger:hilt-android:${Versions.hilt}"
         const val hiltCompiler = "com.google.dagger:hilt-android-compiler:${Versions.hilt}"
     }
+
+    object ThirdParty {
+        const val landscape = "com.github.skydoves:landscapist-coil:1.5.1"
+    }
 }

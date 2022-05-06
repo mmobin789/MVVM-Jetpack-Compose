@@ -17,10 +17,6 @@ object Versions {
         const val mockIO = "1.12.2"
     }
 
-    internal object Google {
-        const val auth = "20.0.1"
-    }
-
     internal object Networking {
         const val retrofit = "2.9.0"
         const val okHttp = "4.9.3"
@@ -28,7 +24,7 @@ object Versions {
 
     // project-level
     const val gradle = "7.0.4"
-    const val kotlin = "1.5.31"
-    const val compose = "1.0.5"
+    const val kotlin = "1.6.10"
+    const val compose = "1.1.1"
     const val hilt = "2.38.1"
 }
