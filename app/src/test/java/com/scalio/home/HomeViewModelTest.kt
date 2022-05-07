@@ -25,6 +25,7 @@ class HomeViewModelTest {
 
     @Test
     fun `When searched user is blank then return input fail`() {
+
         classUnderTest.searchUsers(" ")
 
         Assert.assertTrue(classUnderTest(testCoroutineScope) is HomeViewState.InputFail)
@@ -32,8 +33,22 @@ class HomeViewModelTest {
 
     @Test
     fun `When searched a valid user then return success`() {
+
         classUnderTest.searchUsers(UUID.randomUUID().toString())
 
         Assert.assertTrue(classUnderTest(testCoroutineScope) is HomeViewState.Success)
+    }
+
+    @Test
+    fun `When home view state loads then return idle`() {
+        Assert.assertTrue(classUnderTest(testCoroutineScope) is HomeViewState.Idle)
+    }
+
+    @Test
+    fun `When home view state reset then return idle`() {
+
+        classUnderTest.reset()
+
+        Assert.assertTrue(classUnderTest(testCoroutineScope) is HomeViewState.Idle)
     }
 }
