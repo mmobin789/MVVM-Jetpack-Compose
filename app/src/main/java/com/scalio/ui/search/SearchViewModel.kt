@@ -2,6 +2,7 @@ package com.scalio.ui.search
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -11,7 +12,7 @@ import javax.inject.Inject
 class SearchViewModel @Inject constructor(private val searchViewLogic: SearchViewLogic) :
     ViewModel() {
 
-    private lateinit var composeScope: CoroutineScope
+    private var composeScope = viewModelScope
 
     private val uiState = mutableStateOf<SearchViewState>(SearchViewState.Loading)
 
