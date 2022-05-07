@@ -17,6 +17,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.scalio.R
 import com.scalio.ui.main.nav.Nav
 import com.scalio.ui.main.showToast
@@ -27,7 +28,7 @@ import com.scalio.ui.theme.blue300
 @Composable
 fun HomeView(
     nav: Nav,
-    homeViewIntent: HomeViewIntent,
+    homeViewModel: HomeViewModel = hiltViewModel(),
 ) = ScalioTheme {
 
     // A surface container using the 'background' color from the theme
@@ -35,24 +36,23 @@ fun HomeView(
         Column {
             val context = LocalContext.current
             val user = searchInputText()
-            val scope = rememberCoroutineScope()
 
-            val textId = when (val uiState = homeViewIntent(scope)) {
+            val textId = when (val uiState = homeViewModel(rememberCoroutineScope())) {
                 HomeViewState.Idle -> R.string.txt_submit
                 is HomeViewState.InputFail -> {
-                    homeViewIntent.reset()
+                    homeViewModel.reset()
                     context.showToast(uiState.error)
                     R.string.txt_submit
                 }
                 is HomeViewState.Success -> {
-                    homeViewIntent.reset()
+                    homeViewModel.reset()
                     nav.openSearchView(user)
                     R.string.txt_success
                 }
             }
 
             SubmitButton(textId) {
-                homeViewIntent.searchUsers(user)
+                homeViewModel.searchUsers(user)
             }
         }
     }

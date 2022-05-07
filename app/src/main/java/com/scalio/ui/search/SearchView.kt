@@ -18,6 +18,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -36,16 +37,16 @@ import kotlinx.coroutines.flow.Flow
 @Composable
 fun SearchView(
     nav: Nav,
-    searchViewIntent: SearchViewIntent
+    searchViewModel: SearchViewModel = hiltViewModel()
 ) = ScalioTheme {
 
     // A surface container using the 'background' color from the theme
     Surface(color = MaterialTheme.colors.background) {
         Column {
             val user = nav.parseSearchViewArgs()
-            when (val state = searchViewIntent(rememberCoroutineScope())) {
+            when (val state = searchViewModel(rememberCoroutineScope())) {
                 SearchViewState.Loading -> {
-                    searchViewIntent.searchUsers(user)
+                    searchViewModel.searchUsers(user)
                 }
                 is SearchViewState.UserListing -> {
                     UsersList(state.flowPagingData)

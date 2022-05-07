@@ -2,7 +2,7 @@ package com.scalio.ui.search.model.remote
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.scalio.ui.home.repository.src.UserRepoRemoteSource
+import com.scalio.ui.search.repository.src.UserRepoRemoteSource
 
 class UserRemotePagingSource(
     private val user: String,

@@ -83,6 +83,7 @@ dependencies {
 
     testImplementation(Libs.Testing.jUnit)
     testImplementation(Libs.Testing.mockIO)
+    testImplementation(Libs.Testing.coroutines)
     androidTestImplementation(Libs.Testing.mockIOAndroid)
     androidTestImplementation(Libs.Testing.extJUnit)
     androidTestImplementation(Libs.Testing.espressoCore)

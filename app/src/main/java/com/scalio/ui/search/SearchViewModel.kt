@@ -1,10 +1,15 @@
 package com.scalio.ui.search
 
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.ViewModel
 import androidx.paging.cachedIn
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
+import javax.inject.Inject
 
-class SearchViewIntent(private val searchViewLogic: SearchViewLogic) {
+@HiltViewModel
+class SearchViewModel @Inject constructor(private val searchViewLogic: SearchViewLogic) :
+    ViewModel() {
 
     private lateinit var composeScope: CoroutineScope
 
@@ -16,6 +21,7 @@ class SearchViewIntent(private val searchViewLogic: SearchViewLogic) {
     }
 
     fun searchUsers(user: String) {
-        uiState.value = SearchViewState.UserListing(searchViewLogic.searchUser(user).cachedIn(composeScope))
+        uiState.value =
+            SearchViewState.UserListing(searchViewLogic.searchUser(user).cachedIn(composeScope))
     }
 }

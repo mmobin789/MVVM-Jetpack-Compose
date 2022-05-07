@@ -1,6 +1,6 @@
 package com.scalio.ui.search
 
-import com.scalio.ui.home.repository.UserRepository
+import com.scalio.ui.search.repository.UserRepository
 
 class SearchViewLogic(private val userRepository: UserRepository) {
 

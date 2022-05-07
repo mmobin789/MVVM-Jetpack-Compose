@@ -1,7 +1,6 @@
 package com.scalio.network.di
 
 import com.scalio.BuildConfig
-import com.scalio.ui.home.repository.src.UserRepoWebService
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
@@ -40,9 +39,4 @@ object NetworkModule {
             .baseUrl(baseUrl)
             .client(okHttpClient)
             .build()
-
-    @Provides
-    @Reusable
-    fun provideUserRepoWebService(retrofit: Retrofit) =
-        retrofit.create(UserRepoWebService::class.java)
 }

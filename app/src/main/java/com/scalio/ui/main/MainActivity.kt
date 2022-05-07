@@ -11,25 +11,17 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.scalio.ui.home.HomeView
-import com.scalio.ui.home.HomeViewIntent
 import com.scalio.ui.main.nav.Nav
 import com.scalio.ui.search.SearchView
-import com.scalio.ui.search.SearchViewIntent
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    @Inject
-    lateinit var homeViewIntent: HomeViewIntent
-
-    @Inject
-    lateinit var searchViewIntent: SearchViewIntent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            NavView(homeViewIntent, searchViewIntent)
+            NavView()
         }
     }
 }
@@ -39,19 +31,19 @@ fun Context.showToast(s: String?) = Toast.makeText(this, s.orEmpty(), Toast.LENG
 fun Context.showToast(@StringRes id: Int) = Toast.makeText(this, id, Toast.LENGTH_SHORT).show()
 
 @Composable
-private fun NavView(homeViewIntent: HomeViewIntent, searchViewIntent: SearchViewIntent) {
+private fun NavView() {
     val nav = Nav(rememberNavController())
 
     NavHost(navController = nav.navHostController, startDestination = Nav.HOME) {
 
         composable(Nav.HOME) {
-            HomeView(nav = nav, homeViewIntent = homeViewIntent)
+            HomeView(nav = nav)
         }
 
         composable(
             Nav.SEARCH
         ) {
-            SearchView(nav, searchViewIntent)
+            SearchView(nav = nav)
         }
     }
 }

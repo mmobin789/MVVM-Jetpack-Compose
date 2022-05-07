@@ -1,4 +1,4 @@
-package com.scalio.ui.home.repository
+package com.scalio.ui.search.repository
 
 import androidx.paging.PagingData
 import com.scalio.ui.search.model.remote.GithubUser

@@ -1,4 +1,4 @@
-package com.scalio.ui.home.repository.src
+package com.scalio.ui.search.repository.src
 
 import com.scalio.ui.search.model.remote.GithubUsers
 

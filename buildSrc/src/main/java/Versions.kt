@@ -15,6 +15,7 @@ object Versions {
         const val extJUnit = "1.1.3"
         const val JUnit = "4.13"
         const val mockIO = "1.12.2"
+        const val coroutines = "1.5.0"
     }
 
     internal object Networking {

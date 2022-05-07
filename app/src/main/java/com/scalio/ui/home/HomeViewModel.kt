@@ -1,10 +1,14 @@
 package com.scalio.ui.home
 
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.ViewModel
 import com.scalio.R
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
+import javax.inject.Inject
 
-class HomeViewIntent {
+@HiltViewModel
+class HomeViewModel @Inject constructor() : ViewModel() {
 
     private lateinit var composeScope: CoroutineScope
 
@@ -21,11 +25,10 @@ class HomeViewIntent {
 
     fun searchUsers(user: String) {
 
-        if (user.isBlank()) {
-            uiState.value = HomeViewState.InputFail(R.string.txt_blank)
-            return
+        uiState.value = if (user.isBlank()) {
+            HomeViewState.InputFail(R.string.txt_blank)
         } else {
-            uiState.value = HomeViewState.Success
+            HomeViewState.Success
         }
     }
 }

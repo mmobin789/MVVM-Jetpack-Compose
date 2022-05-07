@@ -1,4 +1,4 @@
-package com.scalio.ui.home.repository.src
+package com.scalio.ui.search.repository.src
 
 class UserRepoRemoteSourceImpl(private val userRepoWebService: UserRepoWebService) :
     UserRepoRemoteSource {

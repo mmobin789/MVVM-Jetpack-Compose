@@ -44,6 +44,7 @@ object Libs {
             "androidx.navigation:navigation-testing:${Versions.UI.navigation}"
         const val mockIO = "io.mockk:mockk:${Versions.Testing.mockIO}"
         const val mockIOAndroid = "io.mockk:mockk-android:${Versions.Testing.mockIO}"
+        const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.Testing.coroutines}"
     }
 
     object Networking {
